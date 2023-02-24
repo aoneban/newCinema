@@ -1,6 +1,8 @@
 import './index.html';
 import './index.scss';
-import { mult, sum } from './modules/utils';
+import { API_URL } from './modules/api';
+import { createTitle } from './modules/api';
+import { createHeader } from './pages/Header';
 
-console.log(mult(3, 4));
-console.log(sum(3, 4));
+createHeader();
+//createTitle(API_URL);
