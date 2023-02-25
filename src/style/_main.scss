@@ -1,0 +1,42 @@
+.content-wrapper {
+    max-width: 80%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(0, auto);
+  }
+  .favorite-movie {
+    background-color: blueviolet;
+    grid-column: 2 / 7;
+    grid-row: 1 / 2;
+  }
+  .wish-movie {
+    background-color: blueviolet;
+    grid-column: 1 / 6;
+    grid-row: 4 / 6;
+  }
+  .list-movies {
+    background-color: blueviolet;
+    display: flex;
+  }
+  .poster-img {
+    max-width: 100%;
+    height: 16vw;
+  }
+
+  .movie__cart {
+    position: relative;
+  }
+
+  .movie__average {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 12px;
+    color: $white;
+    background-color: $black;
+    padding: 5px;
+    border-radius: 50%;
+    border: 1px solid $orange;
+  }

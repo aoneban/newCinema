@@ -1,9 +1,9 @@
-export const API_KEY = '750447c2-3f08-4a4a-b7ea-2dc529472642';
+export const API_KEY = '8fb3f1d4-57ae-40d8-a0e9-7e563721a82c';
 export const API_URL =
-  'https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=2';
+  'https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=';
 
-export async function getMovie(url) {
-  const response = await fetch(url, {
+export async function getMovie(url, page) {
+  const response = await fetch(url + page, {
     method: 'GET',
     headers: {
       'X-API-KEY': API_KEY,
