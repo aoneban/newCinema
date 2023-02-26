@@ -1,5 +1,6 @@
 import { getMovie, API_URL } from './api';
 import { createFooter } from '../pages/Footer';
+import { colorRatingBorder, correctRatingPercent } from './helpers';
 
 export const getFavoritMovie = () => {
   const favoriteMovie = document.createElement('section');
@@ -24,7 +25,7 @@ export const generateMovie = async (url, page, f1, f2) => {
   const contentWrap = document.createElement('main');
   contentWrap.classList.add('content-wrapper');
 
-  data.films.forEach((elem) => {
+  data.films.forEach(async (elem) => {
     const listMovies = document.createElement('div');
     listMovies.classList.add('list-movies');
 
@@ -54,7 +55,9 @@ export const generateMovie = async (url, page, f1, f2) => {
 
     const movieAverage = document.createElement('div');
     movieAverage.classList.add('movie__average');
-    movieAverage.textContent = elem.rating;
+    let rating = await correctRatingPercent(elem.rating);
+    movieAverage.textContent = rating;
+    movieAverage.style.borderColor = colorRatingBorder(rating);
 
     movieInfo.append(movieTitle, movieCategory, movieAverage);
     movieCart.append(movieCover, movieInfo);
@@ -72,7 +75,7 @@ export const paginationMovies = () => {
   const buttonWrapper = document.createElement('div');
   buttonWrapper.classList.add('button-wrapper');
 
-  const footerWrapper = document.querySelector('.footer-wrapper')
+  const footerWrapper = document.querySelector('.footer-wrapper');
 
   const numberOfPage = document.createElement('p');
   numberOfPage.textContent = `Page number: ${NUM_PAGE}`;
@@ -93,7 +96,7 @@ export const paginationMovies = () => {
     generateMovie(API_URL, NUM_PAGE, getFavoritMovie(), getWishMovie());
     setTimeout(paginationMovies, 500);
     createFooter();
-  })
+  });
 
   buttonTwo.textContent = 'next >';
   buttonTwo.addEventListener('click', () => {
