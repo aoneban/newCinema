@@ -1,6 +1,6 @@
-import { getMovie, API_URL } from './api';
+import { getMovie, API_URL, API_FILM_MODAL, getModalWindowMovie } from './api';
 import { createFooter } from '../pages/Footer';
-import { colorRatingBorder, correctRatingPercent } from './helpers';
+import { colorRatingBorder, correctRatingPercent, renderModalWindowMovie } from './helpers';
 
 export const getFavoritMovie = () => {
   const favoriteMovie = document.createElement('section');
@@ -28,6 +28,11 @@ export const generateMovie = async (url, page, f1, f2) => {
   data.films.forEach(async (elem) => {
     const listMovies = document.createElement('div');
     listMovies.classList.add('list-movies');
+    listMovies.addEventListener('click', async () => {
+      const data = await getModalWindowMovie(API_FILM_MODAL, elem.filmId);
+      console.log(data.filmId);
+      renderModalWindowMovie(data);
+    });
 
     const movieCart = document.createElement('div');
     movieCart.classList.add('movie__cart');
