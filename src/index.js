@@ -8,5 +8,5 @@ import { getModalWindowMovie } from './modules/api';
 
 createHeader();
 generateMovie(API_URL, 1, getFavoritMovie(), getWishMovie());
-setTimeout(paginationMovies, 500)
+setTimeout(paginationMovies, 1000);
 createFooter();

@@ -5,6 +5,11 @@
   }
   
   #myImg:hover {opacity: 0.7;}
+
+  .modal-wrapper {
+    width: 90%;
+    margin: 0 auto;
+  }
   
   /* The Modal (background) */
   .modal {
@@ -27,6 +32,8 @@
     display: block;
     width: 20%;
     max-width: 700px;
+    float: left;
+    margin-right: 15px;
   }
   
   /* Caption of Modal Image */
@@ -40,6 +47,10 @@
     padding: 10px 0;
     height: 150px;
   }
+
+  .description-content {
+    padding: 10px;
+  }
   
   /* Add Animation */
   .modal-content, #caption {  
@@ -47,6 +58,22 @@
     -webkit-animation-duration: 0.2s;
     animation-name: zoom;
     animation-duration: 0.2s;
+  }
+
+  .rating-list {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    right: 48px;
+    li {
+      list-style: none;
+      padding: 0 7px;
+    }
+  }
+
+  .title-wrapper {
+    display: flex;
+    justify-content: flex-start;
   }
   
   @-webkit-keyframes zoom {

@@ -1,6 +1,6 @@
 import { getMovie, API_URL, API_FILM_MODAL, getModalWindowMovie } from './api';
 import { createFooter } from '../pages/Footer';
-import { colorRatingBorder, correctRatingPercent, renderModalWindowMovie } from './helpers';
+import { colorRatingBorder, correctRatingPercent, renderModalWindowMovie, removeElements } from './helpers';
 
 export const getFavoritMovie = () => {
   const favoriteMovie = document.createElement('section');
@@ -58,13 +58,21 @@ export const generateMovie = async (url, page, f1, f2) => {
     movieCategory.classList.add('movie__category');
     movieCategory.textContent = elem.genres.map((el) => '\n' + el.genre);
 
+    const productionYear = document.createElement('div');
+    productionYear.classList.add('production__year');
+    productionYear.textContent = elem.year;
+
+    const productionCountries = document.createElement('div');
+    productionCountries.classList.add('production__countries');
+    productionCountries.textContent = elem.countries.map((el) => '\n' + el.country);
+
     const movieAverage = document.createElement('div');
     movieAverage.classList.add('movie__average');
     let rating = await correctRatingPercent(elem.rating);
     movieAverage.textContent = rating;
     movieAverage.style.borderColor = colorRatingBorder(rating);
 
-    movieInfo.append(movieTitle, movieCategory, movieAverage);
+    movieInfo.append(movieTitle, movieCategory, productionCountries, productionYear, movieAverage);
     movieCart.append(movieCover, movieInfo);
     listMovies.append(movieCart);
     contentWrap.append(listMovies, f1, f2);
@@ -76,6 +84,7 @@ export const generateMovie = async (url, page, f1, f2) => {
 let NUM_PAGE = 1;
 
 export const paginationMovies = () => {
+  const contentWrap = document.querySelector('.content-wrapper')
   const root = document.getElementById('root');
   const buttonWrapper = document.createElement('div');
   buttonWrapper.classList.add('button-wrapper');
@@ -95,25 +104,22 @@ export const paginationMovies = () => {
     if (NUM_PAGE < 1) {
       NUM_PAGE = 1;
     }
-    footerWrapper.remove();
-    buttonWrapper.remove();
-    movies.remove();
+    removeElements(footerWrapper, buttonWrapper, movies);
     generateMovie(API_URL, NUM_PAGE, getFavoritMovie(), getWishMovie());
-    setTimeout(paginationMovies, 500);
+    setTimeout(paginationMovies, 1000);
     createFooter();
   });
 
   buttonTwo.textContent = 'next >';
   buttonTwo.addEventListener('click', () => {
     NUM_PAGE++;
-    footerWrapper.remove();
-    buttonWrapper.remove();
-    movies.remove();
+    removeElements(footerWrapper, buttonWrapper, movies);
     generateMovie(API_URL, NUM_PAGE, getFavoritMovie(), getWishMovie());
-    setTimeout(paginationMovies, 500);
+    setTimeout(paginationMovies, 1000);
     createFooter();
   });
 
   buttonWrapper.append(buttonOne, numberOfPage, buttonTwo);
-  root.append(buttonWrapper);
+  contentWrap.append(buttonWrapper);
 };
+
