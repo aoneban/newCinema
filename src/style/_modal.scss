@@ -71,9 +71,17 @@
     }
   }
 
-  .title-wrapper {
+  .set-actors {
     display: flex;
-    justify-content: flex-start;
+  }
+
+  .actor-name {
+    font-size: 11px;
+    width: 8em;
+  }
+
+  .img-actor {
+    height: 60%;
   }
   
   @-webkit-keyframes zoom {
