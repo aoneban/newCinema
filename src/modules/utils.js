@@ -1,6 +1,7 @@
 import { getMovie, API_URL, API_FILM_MODAL, getModalWindowMovie } from './api';
 import { createFooter } from '../pages/Footer';
-import { colorRatingBorder, correctRatingPercent, renderModalWindowMovie, removeElements } from './helpers';
+import { colorRatingBorder, correctRatingPercent, removeElements } from './helpers';
+import { renderModalWindowMovie } from './modal';
 
 export const getFavoritMovie = () => {
   const favoriteMovie = document.createElement('section');
