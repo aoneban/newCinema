@@ -1,4 +1,4 @@
-import { getMovie, API_URL, API_FILM_MODAL, getModalWindowMovie } from './api';
+import { getMovie, API_URL, API_FILM_MODAL } from './api';
 import { createFooter } from '../pages/Footer';
 import { colorRatingBorder, correctRatingPercent, removeElements } from './helpers';
 import { renderModalWindowMovie } from './modal';
@@ -30,7 +30,7 @@ export const generateMovie = async (url, page, f1, f2) => {
     const listMovies = document.createElement('div');
     listMovies.classList.add('list-movies');
     listMovies.addEventListener('click', async () => {
-      const data = await getModalWindowMovie(API_FILM_MODAL, elem.filmId);
+      const data = await getMovie(API_FILM_MODAL, elem.filmId);
       console.log(data.filmId);
       renderModalWindowMovie(data);
     });
