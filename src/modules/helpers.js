@@ -19,3 +19,4 @@ export const removeElements = (a,b,c) => {
   b.remove();
   c.remove();
 }
+

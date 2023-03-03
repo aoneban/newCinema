@@ -1,15 +1,16 @@
-import { getInfoMovieActors, API_FILM_ACTORS } from './api';
+import { getMovie, API_FILM_ACTORS, API_PERSONAL_ACTOR } from './api';
 
 export const renderModalWindowMovie = async (data) => {
-  const actorsData = await getInfoMovieActors(
-    API_FILM_ACTORS,
-    data.kinopoiskId
-  );
+  const actorsData = await getMovie(API_FILM_ACTORS, data.kinopoiskId);
   const root = document.getElementById('root');
 
   const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.setAttribute('id', 'myModal');
+  modal.addEventListener('click', () => {
+    const forDelete = document.querySelector('.personal-info-wrap');
+    forDelete.remove();
+  });
 
   const modalWrapper = document.createElement('div');
   modalWrapper.classList.add('modal-wrapper');
@@ -50,7 +51,9 @@ export const renderModalWindowMovie = async (data) => {
 
   const ratingValueOne = document.createElement('li');
   ratingValueOne.classList.add('rating-value');
-  ratingValueOne.innerHTML = `IMDB: ${data.ratingImdb !== null ? data.ratingImdb : '-'}`;
+  ratingValueOne.innerHTML = `IMDB: ${
+    data.ratingImdb !== null ? data.ratingImdb : '-'
+  }`;
 
   const ratingValueTwo = document.createElement('li');
   ratingValueTwo.classList.add('rating-value');
@@ -58,7 +61,9 @@ export const renderModalWindowMovie = async (data) => {
 
   const ratingValueThree = document.createElement('li');
   ratingValueThree.classList.add('rating-value');
-  ratingValueThree.textContent = `Кинопоиск: ${data.ratingKinopoisk !== null ? data.ratingKinopoisk : '-'}`;
+  ratingValueThree.textContent = `Кинопоиск: ${
+    data.ratingKinopoisk !== null ? data.ratingKinopoisk : '-'
+  }`;
 
   ratingList.append(ratingValueOne, ratingValueTwo, ratingValueThree);
   ratingWrapper.append(ratingList);
@@ -76,24 +81,61 @@ export const renderModalWindowMovie = async (data) => {
 
   const setActors = document.createElement('div');
   setActors.classList.add('set-actors');
-  const actorDataWrapp = actorsData.slice(0, 13).map((el) => {
-    const actorsWrapper = document.createElement('div');
-    actorsWrapper.classList.add('actors-wrapper');
+  actorsData.slice(0, 13).map(async (el) => {
+    if (el.nameRu !== '') {
+      const actorsWrapper = document.createElement('div');
+      actorsWrapper.classList.add('actors-wrapper');
 
-    const imgActor = document.createElement('img');
-    imgActor.classList.add('img-actor');
-    imgActor.src = el.posterUrl;
-    imgActor.alt = el.nameRu;
-    imgActor.width = 50;
+      const imgActor = document.createElement('img');
+      imgActor.classList.add('img-actor');
+      imgActor.src = el.posterUrl;
+      imgActor.alt = el.nameRu;
+      imgActor.addEventListener('mouseover', async () => {
+        const actorInfo = await getMovie(API_PERSONAL_ACTOR, el.staffId);
 
-    const actorName = document.createElement('p');
-    actorName.classList.add('actor-name');
-    actorName.textContent = el.nameRu;
+        const modalWrapper = document.querySelector('.modal-wrapper');
+        const personalInfoWrap = document.createElement('div');
+        personalInfoWrap.classList.add('personal-info-wrap');
 
-    actorsWrapper.append(imgActor, actorName);
-    setActors.append(actorsWrapper)
+        const nameImg = document.createElement('img');
+        nameImg.classList.add('personal-info');
+        nameImg.src = actorInfo.posterUrl;
+
+        const name = document.createElement('h2');
+        name.textContent = actorInfo.nameRu;
+
+        const profession = document.createElement('p');
+        profession.classList.add('profession');
+        profession.textContent = `Профессия: ${actorInfo.profession}`;
+
+        const age = document.createElement('p');
+        age.classList.add('actors-age');
+        age.textContent = `Возраст, лет: ${actorInfo.age}`;
+
+        const placeBirth = document.createElement('p');
+        placeBirth.classList.add('place-birth');
+        placeBirth.textContent = actorInfo.birthplace;
+
+        const films = document.createElement('p');
+        films.classList.add('films');
+        films.innerHTML = `Фильмография: ${actorInfo.films.map((el) => {
+          if (el.nameRu !== null) {
+            return ` ${el.nameRu}`;
+          }
+        })}`
+
+        personalInfoWrap.append(name, nameImg, age, placeBirth, profession, films);
+        modalWrapper.append(personalInfoWrap);
+      });
+
+      const actorName = document.createElement('p');
+      actorName.classList.add('actor-name');
+      actorName.textContent = el.nameRu;
+
+      actorsWrapper.append(imgActor, actorName);
+      setActors.append(actorsWrapper);
+    }
   });
-  ;
   details.append(summary, setActors);
 
   const genreItem = document.createElement('p');
@@ -102,7 +144,9 @@ export const renderModalWindowMovie = async (data) => {
 
   const durationItem = document.createElement('p');
   durationItem.classList.add('duration');
-  durationItem.textContent = `Продолжительность: ${data.filmLength} минут`;
+  durationItem.textContent = `Продолжительность: ${
+    data.filmLength !== null ? data.filmLength + ' минут' : '-'
+  }`;
 
   const descContent = document.createElement('p');
   descContent.classList.add('description-content');
