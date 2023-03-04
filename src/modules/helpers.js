@@ -20,3 +20,13 @@ export const removeElements = (a,b,c) => {
   c.remove();
 }
 
+// clearing the movies array from null
+export const f10 = (arr) => {
+  const result = []
+  arr.map(el => {
+    if(el.nameRu !== null) {
+      result.push(' ' + el.nameRu)
+    }
+  })
+  return result
+}

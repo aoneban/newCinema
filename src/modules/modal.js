@@ -1,4 +1,5 @@
 import { getMovie, API_FILM_ACTORS, API_PERSONAL_ACTOR } from './api';
+import { f10 } from './helpers';
 
 export const renderModalWindowMovie = async (data) => {
   const actorsData = await getMovie(API_FILM_ACTORS, data.kinopoiskId);
@@ -7,9 +8,11 @@ export const renderModalWindowMovie = async (data) => {
   const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.setAttribute('id', 'myModal');
-  modal.addEventListener('click', () => {
+  modal.addEventListener('click', (e) => {
     const forDelete = document.querySelector('.personal-info-wrap');
-    forDelete.remove();
+    if(e.target !== forDelete) {
+      forDelete.remove();
+    }
   });
 
   const modalWrapper = document.createElement('div');
@@ -118,11 +121,7 @@ export const renderModalWindowMovie = async (data) => {
 
         const films = document.createElement('p');
         films.classList.add('films');
-        films.innerHTML = `Фильмография: ${actorInfo.films.map((el) => {
-          if (el.nameRu !== null) {
-            return ` ${el.nameRu}`;
-          }
-        })}`
+        films.innerHTML = `Фильмография: ${f10(actorInfo.films)}`
 
         personalInfoWrap.append(name, nameImg, age, placeBirth, profession, films);
         modalWrapper.append(personalInfoWrap);
