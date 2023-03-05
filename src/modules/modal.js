@@ -1,5 +1,5 @@
 import { getMovie, API_FILM_ACTORS, API_PERSONAL_ACTOR } from './api';
-import { f10 } from './helpers';
+import { API_FILM_MODAL } from './api';
 
 export const renderModalWindowMovie = async (data) => {
   const actorsData = await getMovie(API_FILM_ACTORS, data.kinopoiskId);
@@ -8,12 +8,6 @@ export const renderModalWindowMovie = async (data) => {
   const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.setAttribute('id', 'myModal');
-  modal.addEventListener('click', (e) => {
-    const forDelete = document.querySelector('.personal-info-wrap');
-    if(e.target !== forDelete) {
-      forDelete.remove();
-    }
-  });
 
   const modalWrapper = document.createElement('div');
   modalWrapper.classList.add('modal-wrapper');
@@ -82,6 +76,15 @@ export const renderModalWindowMovie = async (data) => {
   const summary = document.createElement('summary');
   summary.textContent = 'Актеры';
 
+  const span2 = document.createElement('span');
+  const x2 = document.createTextNode('\u00D7');
+  span2.classList.add('close');
+  span2.appendChild(x2);
+  span2.addEventListener('click', () => {
+    const forDelete = document.querySelector('.personal-info-wrap');
+      forDelete.remove();
+  });
+
   const setActors = document.createElement('div');
   setActors.classList.add('set-actors');
   actorsData.slice(0, 13).map(async (el) => {
@@ -111,19 +114,40 @@ export const renderModalWindowMovie = async (data) => {
         profession.classList.add('profession');
         profession.textContent = `Профессия: ${actorInfo.profession}`;
 
+        const interestingFacts = document.createElement('p');
+        interestingFacts.classList.add('interesting-facts');
+        interestingFacts.textContent = `Интересные факты: ${actorInfo.facts.map(el => '\n' + el)}`;
+
         const age = document.createElement('p');
         age.classList.add('actors-age');
         age.textContent = `Возраст, лет: ${actorInfo.age}`;
 
+        const birthday = document.createElement('p');
+        birthday.classList.add('actors-birth');
+        birthday.textContent = `Дата рождения: ${actorInfo.birthday !== null ? actorInfo.birthday : '-'}`;
+
         const placeBirth = document.createElement('p');
         placeBirth.classList.add('place-birth');
-        placeBirth.textContent = actorInfo.birthplace;
+        placeBirth.textContent = `Место рождения: ${actorInfo.birthplace !== null ? actorInfo.birthplace : '-'}`;
 
-        const films = document.createElement('p');
-        films.classList.add('films');
-        films.innerHTML = `Фильмография: ${f10(actorInfo.films)}`
+        const personFilms = document.createElement('div');
+        personFilms.classList.add('films');
+        personFilms.textContent = 'Фильмография: ';
+        actorInfo.films.map(el => {
+          if(el.nameRu !== null) {
+            const actorFilm = document.createElement('p');
+            actorFilm.classList.add('personal-film');
+            actorFilm.textContent = el.nameRu;
+            actorFilm.addEventListener('click', async () => {
+              modal.remove();
+              const data = await getMovie(API_FILM_MODAL, el.filmId);
+              renderModalWindowMovie(data);
+            });
+            personFilms.append(actorFilm);
+          }
+        })
 
-        personalInfoWrap.append(name, nameImg, age, placeBirth, profession, films);
+        personalInfoWrap.append(name, nameImg, age, birthday, placeBirth, profession, interestingFacts, personFilms, span2);
         modalWrapper.append(personalInfoWrap);
       });
 
@@ -165,6 +189,6 @@ export const renderModalWindowMovie = async (data) => {
   modal.style.display = 'block';
 
   span.onclick = function () {
-    modal.style.display = 'none';
+    modal.remove();
   };
 };

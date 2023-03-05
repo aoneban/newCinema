@@ -88,7 +88,7 @@
   }
 
   .personal-info-wrap {
-    width: 1300px;
+    max-width: 1350px;
     height: auto;
     background-color: aquamarine;
     border-radius: 10px;
@@ -102,6 +102,31 @@
       float: left;
       margin-right: 15px;
     }
+  }
+
+  .personal-film {
+    position: relative;
+    display: inline;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .personal-film::after {
+    content: ', ';
+    text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .personal-film:last-child::after {
+    content: '.';
+  }
+
+  .films{
+    padding-bottom: 120px;
   }
   
   @-webkit-keyframes zoom {
