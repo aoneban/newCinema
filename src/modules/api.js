@@ -6,6 +6,7 @@ export const API_FILM_MODAL =
 export const API_FILM_ACTORS =
   'https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=';
 export const API_PERSONAL_ACTOR = 'https://kinopoiskapiunofficial.tech/api/v1/staff/';
+export const API_GET_TRAILERS = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/';
 
 export async function getMovie(url, id) {
   const response = await fetch(url + id, {
@@ -20,4 +21,14 @@ export async function getMovie(url, id) {
   return responseData;
 }
 
-
+export async function getMovieTrailers(url, id, word) {
+  const response = await fetch(url + id + word, {
+    method: 'GET',
+    headers: {
+      'X-API-KEY': API_KEY,
+      'Content-Type': 'application/json',
+    },
+  });
+  const responseData = await response.json();
+  return responseData;
+}
