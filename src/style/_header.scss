@@ -1,33 +1,50 @@
 .header-wrapper {
-    display: block;
-    max-width: 1920px;
-    background-color: #121212;
-    .header-list {
-      max-width: 80%;
-      margin: 0 auto;
+  display: block;
+  max-width: 1920px;
+  background-color: #121212;
+  .header-list {
+    display: flex;
+    max-width: 80%;
+    margin: 0 auto;
+    color: $white;
+    .header-wrapp {
       display: grid;
-      grid-template-columns: 1fr 1fr 3fr 1fr 1fr 1fr 1fr;
-      padding: 20px 0;
+      grid-template-columns: 2fr 4fr 1fr 2fr 2fr 1fr;
+      padding: 10px 0;
       align-items: center;
-      .header-items {
-        list-style: none;
-       }
-      .header-link {
-        padding: 7px 15px;
-        background: #eda220;
-        border-radius: 3px;
-        cursor: pointer;
+    }
+    .header-items {
+      list-style: none;
+    }
+    .header-menu {
+      margin-left: 35px;
+    }
+    .logo-wrapper {
+      text-decoration: none;
+      padding: 3px;
+      .logo-name {
+        margin-top: 20px;
+        padding: 6px 11px;
+        background: orangered;
+        border-radius: 7px;
+        font: bold 21px Tahoma;
         color: $white;
-        margin: 0 15px 0 4px;
-      }
-      .input-items {
-        padding: 7px 15px;
-        border-radius: 3px;
-        color: $back;
-        outline: none;
-        border: none;
       }
     }
+    .header-link {
+      padding: 7px 15px;
+      background: #eda220;
+      border-radius: 3px;
+      cursor: pointer;
+      color: $white;
+      margin: 0 15px 0 4px;
+    }
+    .input-items {
+      padding: 7px 15px;
+      border-radius: 3px;
+      color: $back;
+      outline: none;
+      border: none;
+    }
   }
-  
-  
+}

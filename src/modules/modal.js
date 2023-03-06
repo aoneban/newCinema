@@ -1,19 +1,26 @@
-import { getMovie, API_FILM_ACTORS, API_PERSONAL_ACTOR } from './api';
-import { f10 } from './helpers';
+import { getMovie, getMovieTrailers } from './api';
+import {
+  API_FILM_MODAL,
+  API_GET_TRAILERS,
+  API_FILM_ACTORS,
+  API_PERSONAL_ACTOR,
+} from './api';
 
 export const renderModalWindowMovie = async (data) => {
+  //get actors to display in details
   const actorsData = await getMovie(API_FILM_ACTORS, data.kinopoiskId);
+  //get trailers to display in details
+  const getTrailers = await getMovieTrailers(
+    API_GET_TRAILERS,
+    data.kinopoiskId,
+    '/videos'
+  );
+  console.log(getTrailers.items.map((el) => el));
   const root = document.getElementById('root');
 
   const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.setAttribute('id', 'myModal');
-  modal.addEventListener('click', (e) => {
-    const forDelete = document.querySelector('.personal-info-wrap');
-    if(e.target !== forDelete) {
-      forDelete.remove();
-    }
-  });
 
   const modalWrapper = document.createElement('div');
   modalWrapper.classList.add('modal-wrapper');
@@ -111,19 +118,61 @@ export const renderModalWindowMovie = async (data) => {
         profession.classList.add('profession');
         profession.textContent = `Профессия: ${actorInfo.profession}`;
 
+        const interestingFacts = document.createElement('div');
+        interestingFacts.classList.add('interesting-facts');
+        actorInfo.facts.map((el) => {
+          const oneIndFact = document.createElement('p');
+          oneIndFact.classList.add('individual-fact');
+          oneIndFact.textContent = el;
+          interestingFacts.append(oneIndFact);
+        });
+
         const age = document.createElement('p');
         age.classList.add('actors-age');
         age.textContent = `Возраст, лет: ${actorInfo.age}`;
 
+        const birthday = document.createElement('p');
+        birthday.classList.add('actors-birth');
+        birthday.textContent = `Дата рождения: ${
+          actorInfo.birthday !== null ? actorInfo.birthday : '-'
+        }`;
+
         const placeBirth = document.createElement('p');
         placeBirth.classList.add('place-birth');
-        placeBirth.textContent = actorInfo.birthplace;
+        placeBirth.textContent = `Место рождения: ${
+          actorInfo.birthplace !== null ? actorInfo.birthplace : '-'
+        }`;
 
-        const films = document.createElement('p');
-        films.classList.add('films');
-        films.innerHTML = `Фильмография: ${f10(actorInfo.films)}`
-
-        personalInfoWrap.append(name, nameImg, age, placeBirth, profession, films);
+        const personFilms = document.createElement('div');
+        personFilms.classList.add('films');
+        personFilms.textContent = 'Фильмография: ';
+        const result = [];
+        actorInfo.films.map((el) => {
+          if (!result.includes(el.nameRu) && el.nameRu !== null) {
+            result.push(el.nameRu);
+            const actorFilm = document.createElement('p');
+            actorFilm.classList.add('personal-film');
+            actorFilm.textContent = el.nameRu;
+            actorFilm.addEventListener('click', async () => {
+              modal.remove();
+              const data = await getMovie(API_FILM_MODAL, el.filmId);
+              renderModalWindowMovie(data);
+            });
+            personFilms.append(actorFilm);
+          }
+        });
+        result.length = 0;
+        personalInfoWrap.append(
+          name,
+          nameImg,
+          age,
+          birthday,
+          placeBirth,
+          profession,
+          interestingFacts,
+          personFilms,
+          span2
+        );
         modalWrapper.append(personalInfoWrap);
       });
 
@@ -135,6 +184,16 @@ export const renderModalWindowMovie = async (data) => {
       setActors.append(actorsWrapper);
     }
   });
+
+  const span2 = document.createElement('span');
+  const x2 = document.createTextNode('\u00D7');
+  span2.classList.add('close');
+  span2.appendChild(x2);
+  span2.addEventListener('click', () => {
+    const forDelete = document.querySelector('.personal-info-wrap');
+    forDelete.remove();
+  });
+
   details.append(summary, setActors);
 
   const genreItem = document.createElement('p');
@@ -151,12 +210,66 @@ export const renderModalWindowMovie = async (data) => {
   descContent.classList.add('description-content');
   descContent.textContent = data.description;
 
+  const detailsVideo = document.createElement('details');
+  const summaryVideo = document.createElement('summary');
+  const wrapperVideos = document.createElement('div');
+  wrapperVideos.classList.add('wrapper-videos');
+  summaryVideo.textContent = 'Трейлеры';
+
+  getTrailers.items.slice(0, 15).map((el) => {
+    const videoTrailer = document.createElement('video');
+    if (el.url.includes('volgafilm')) {
+      videoTrailer.classList.add('movie-trailer');
+      videoTrailer.src = el.url;
+      videoTrailer.controls = true;
+      videoTrailer.muted = false;
+      videoTrailer.height = 180;
+      videoTrailer.width = 220;
+      wrapperVideos.append(videoTrailer);
+    } else if (el.url.includes('watch?')) {
+      const iframe = document.createElement('iframe')
+      iframe.classList.add('iframe-videos')
+      const repl = el.url.replace('watch?v=', 'embed/')
+      iframe.classList.add('movie-trailer');
+      iframe.src = repl;
+      iframe.controls = true;
+      iframe.muted = false;
+      iframe.height = 180;
+      iframe.width = 220;
+      wrapperVideos.append(iframe);
+    } else if (el.url.includes('/v/')) {
+      const iframe = document.createElement('iframe')
+      iframe.classList.add('iframe-videos')
+      const repl = el.url.replace('/v/', '/embed/')
+      iframe.classList.add('movie-trailer');
+      iframe.src = repl;
+      iframe.controls = true;
+      iframe.muted = false;
+      iframe.height = 180;
+      iframe.width = 220;
+      wrapperVideos.append(iframe);
+    } else if (el.url.includes('utu.be')) {
+      const iframe = document.createElement('iframe')
+      iframe.classList.add('iframe-videos')
+      const repl = el.url.replace('youtu.be', 'www.youtube.com/embed')
+      iframe.classList.add('movie-trailer');
+      iframe.src = repl;
+      iframe.controls = true;
+      iframe.muted = false;
+      iframe.height = 180;
+      iframe.width = 220;
+      wrapperVideos.append(iframe);
+    } 
+  });
+  detailsVideo.append(summaryVideo, wrapperVideos);
+
   dataMovies.append(
     dateOfRelise,
     details,
     genreItem,
     durationItem,
-    descContent
+    descContent,
+    detailsVideo
   );
   modalWrapper.append(titleWrapper, imgWrapper, ratingWrapper, dataMovies);
   modal.append(modalWrapper, span);
@@ -165,6 +278,6 @@ export const renderModalWindowMovie = async (data) => {
   modal.style.display = 'block';
 
   span.onclick = function () {
-    modal.style.display = 'none';
+    modal.remove();
   };
 };

@@ -20,8 +20,8 @@ export const getWishMovie = () => {
   return wishMovie;
 };
 
-export const generateMovie = async (url, page, f1, f2) => {
-  const data = await getMovie(url, page);
+export const generateMovie = async (url, id, f1, f2) => {
+  const data = await getMovie(url, id);
   const root = document.getElementById('root');
   const contentWrap = document.createElement('main');
   contentWrap.classList.add('content-wrapper');
