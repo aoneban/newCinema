@@ -9,9 +9,12 @@
     color: $white;
     .header-wrapp {
       display: grid;
-      grid-template-columns: 2fr 4fr 1fr 2fr 2fr 1fr;
+      grid-template-columns: 2fr 7fr 1fr 3fr 2fr;
       padding: 10px 0;
       align-items: center;
+      .input-wrapper {
+        list-style: none;
+      }
     }
     .header-items {
       list-style: none;
@@ -45,6 +48,11 @@
       color: $back;
       outline: none;
       border: none;
+      width: 100%;
     }
   }
+}
+
+.input-form {
+  display: flex;
 }

@@ -215,10 +215,15 @@ export const renderModalWindowMovie = async (data) => {
   const wrapperVideos = document.createElement('div');
   wrapperVideos.classList.add('wrapper-videos');
   summaryVideo.textContent = 'Трейлеры';
+  const textMessage = document.createElement('p');
+  textMessage.classList.add('text-message');
+  textMessage.textContent = 'Сожалеем, но к данному фильму трейлеров не найдено...';
+  detailsVideo.append(textMessage)
 
-  getTrailers.items.slice(0, 15).map((el) => {
+  getTrailers.items.slice(0, 15).map((el, ind) => {
     const videoTrailer = document.createElement('video');
     if (el.url.includes('volgafilm')) {
+      textMessage.remove();
       videoTrailer.classList.add('movie-trailer');
       videoTrailer.src = el.url;
       videoTrailer.controls = true;
@@ -227,33 +232,36 @@ export const renderModalWindowMovie = async (data) => {
       videoTrailer.width = 220;
       wrapperVideos.append(videoTrailer);
     } else if (el.url.includes('watch?')) {
-      const iframe = document.createElement('iframe')
-      iframe.classList.add('iframe-videos')
-      const repl = el.url.replace('watch?v=', 'embed/')
+      textMessage.remove();
+      const iframe = document.createElement('iframe');
+      iframe.classList.add('iframe-videos');
+      const replaceLink = el.url.replace('watch?v=', 'embed/');
       iframe.classList.add('movie-trailer');
-      iframe.src = repl;
+      iframe.src = replaceLink;
       iframe.controls = true;
       iframe.muted = false;
       iframe.height = 180;
       iframe.width = 220;
       wrapperVideos.append(iframe);
     } else if (el.url.includes('/v/')) {
-      const iframe = document.createElement('iframe')
-      iframe.classList.add('iframe-videos')
-      const repl = el.url.replace('/v/', '/embed/')
+      textMessage.remove();
+      const iframe = document.createElement('iframe');
+      iframe.classList.add('iframe-videos');
+      const replaceLink = el.url.replace('/v/', '/embed/');
       iframe.classList.add('movie-trailer');
-      iframe.src = repl;
+      iframe.src = replaceLink;
       iframe.controls = true;
       iframe.muted = false;
       iframe.height = 180;
       iframe.width = 220;
       wrapperVideos.append(iframe);
     } else if (el.url.includes('utu.be')) {
-      const iframe = document.createElement('iframe')
-      iframe.classList.add('iframe-videos')
-      const repl = el.url.replace('youtu.be', 'www.youtube.com/embed')
+      textMessage.remove();
+      const iframe = document.createElement('iframe');
+      iframe.classList.add('iframe-videos');
+      const replaceLink = el.url.replace('youtu.be', 'www.youtube.com/embed');
       iframe.classList.add('movie-trailer');
-      iframe.src = repl;
+      iframe.src = replaceLink;
       iframe.controls = true;
       iframe.muted = false;
       iframe.height = 180;
@@ -261,6 +269,7 @@ export const renderModalWindowMovie = async (data) => {
       wrapperVideos.append(iframe);
     } 
   });
+  
   detailsVideo.append(summaryVideo, wrapperVideos);
 
   dataMovies.append(
