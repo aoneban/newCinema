@@ -1,3 +1,5 @@
+import { getSearchMovie } from "../modules/search";
+
 export const createHeader = () => {
   const root = document.getElementById('root');
   const header = document.createElement('header');
@@ -23,15 +25,25 @@ export const createHeader = () => {
   menu.classList.add('header-items', 'header-menu');
   menu.textContent = 'Menu';
 
+  const inputWrapper = document.createElement('li');
+  inputWrapper.classList.add('input-wrapper');
+
+  const inputForm = document.createElement('form');
+  inputForm.classList.add('input-form');
+
   const inputSearch = document.createElement('input');
   inputSearch.setAttribute('type', 'text');
   inputSearch.setAttribute('placeholder', 'Search movie');
   inputSearch.classList.add('header-items', 'input-items');
 
-  const buttonSearch = document.createElement('a');
+  const buttonSearch = document.createElement('input');
   buttonSearch.setAttribute('type', 'button');
+  buttonSearch.setAttribute('value', 'Search');
   buttonSearch.classList.add('header-items', 'header-link');
-  buttonSearch.textContent = 'Search';
+  buttonSearch.addEventListener('click', getSearchMovie);
+
+  inputForm.append(inputSearch, buttonSearch)
+  inputWrapper.append(inputForm)
 
   const watchList = document.createElement('li');
   watchList.classList.add('header-items');
@@ -48,8 +60,7 @@ export const createHeader = () => {
   headerWrapp.append(
     logo,
     menu,
-    inputSearch,
-    buttonSearch,
+    inputWrapper,
     watchList,
     singIn,
     enPl
