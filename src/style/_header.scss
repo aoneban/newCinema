@@ -37,7 +37,7 @@
     .header-link {
       padding: 7px 15px;
       background: #eda220;
-      border-radius: 3px;
+      border-radius: 5px;
       cursor: pointer;
       color: $white;
       margin: 0 15px 0 4px;
@@ -55,4 +55,5 @@
 
 .input-form {
   display: flex;
+  align-items: center;
 }

@@ -7,14 +7,18 @@
     grid-auto-rows: minmax(0, auto);
   }
   .favorite-movie {
-    background-color: blueviolet;
     grid-column: 2 / 7;
     grid-row: 1 / 2;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .wish-movie {
     background-color: blueviolet;
     grid-column: 1 / 6;
     grid-row: 4 / 6;
+    text-align: center;
   }
   .list-movies {
     display: flex;
@@ -58,3 +62,11 @@
     font-size: 12px;
     padding: 3px 7px;
   }
+
+.img-premier {
+  height: 81px;
+  transition: 1.5s;
+  &:hover {
+    transform: scale(3);
+  }
+}

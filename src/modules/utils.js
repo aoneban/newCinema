@@ -1,30 +1,45 @@
-import { getMovie, API_URL, API_FILM_MODAL } from './api';
+import { getMovie, API_URL, API_FILM_MODAL, API_FILMS_PREMIER } from './api';
 import { createFooter } from '../pages/Footer';
-import { colorRatingBorder, correctRatingPercent, removeElements } from './helpers';
+import {
+  colorRatingBorder,
+  correctRatingPercent,
+  removeElements,
+} from './helpers';
 import { renderModalWindowMovie } from './modal';
 
-export const getFavoritMovie = () => {
-  const favoriteMovie = document.createElement('section');
-  favoriteMovie.classList.add('favorite-movie');
+let TIMER = 0;
 
-  const img = document.createElement('img');
-  img.src = 'https://picsum.photos/910/400';
-  favoriteMovie.append(img);
-  favoriteMovie.style.overflow = 'hidden';
-  return favoriteMovie;
-};
-
-export const getWishMovie = () => {
-  const wishMovie = document.createElement('section');
-  wishMovie.classList.add('wish-movie');
-  return wishMovie;
-};
-
-export const generateMovie = async (url, id, f1, f2) => {
+export const generateMovie = async (url, id) => {
   const data = await getMovie(url, id);
+  const dataPremier = await getMovie(API_FILMS_PREMIER, 'MARCH');
   const root = document.getElementById('root');
   const contentWrap = document.createElement('main');
   contentWrap.classList.add('content-wrapper');
+
+  const favoriteMovie = document.createElement('section');
+  favoriteMovie.classList.add('favorite-movie');
+  dataPremier.items.map((el) => {
+    console.log('это' + el);
+    const imgWrapper = document.createElement('div');
+    imgWrapper.classList.add('img-premier-wrapper');
+    const imgPremier = document.createElement('img');
+    imgPremier.classList.add('img-premier');
+    imgPremier.src = el.posterUrlPreview;
+    imgWrapper.append(imgPremier);
+    imgWrapper.addEventListener('click', async () => {
+      const data = await getMovie(API_FILM_MODAL, el.kinopoiskId);
+      console.log(data.kinopoiskId);
+      renderModalWindowMovie(data);
+    });
+    favoriteMovie.append(imgWrapper);
+  });
+
+  const wishMovie = document.createElement('section');
+  wishMovie.classList.add('wish-movie');
+  //const imgPremier = document.createElement('img');
+  //imgPremier.classList.add('premier-img');
+  //imgPremier.src = dataPremier.items[TIMER].posterUrl;
+  //wishMovie.append(imgPremier);
 
   data.films.forEach(async (elem) => {
     const listMovies = document.createElement('div');
@@ -65,7 +80,9 @@ export const generateMovie = async (url, id, f1, f2) => {
 
     const productionCountries = document.createElement('div');
     productionCountries.classList.add('production__countries');
-    productionCountries.textContent = elem.countries.map((el) => '\n' + el.country);
+    productionCountries.textContent = elem.countries.map(
+      (el) => '\n' + el.country
+    );
 
     const movieAverage = document.createElement('div');
     movieAverage.classList.add('movie__average');
@@ -73,10 +90,16 @@ export const generateMovie = async (url, id, f1, f2) => {
     movieAverage.textContent = rating;
     movieAverage.style.borderColor = colorRatingBorder(rating);
 
-    movieInfo.append(movieTitle, movieCategory, productionCountries, productionYear, movieAverage);
+    movieInfo.append(
+      movieTitle,
+      movieCategory,
+      productionCountries,
+      productionYear,
+      movieAverage
+    );
     movieCart.append(movieCover, movieInfo);
     listMovies.append(movieCart);
-    contentWrap.append(listMovies, f1, f2);
+    contentWrap.append(listMovies, wishMovie, favoriteMovie);
     root.append(contentWrap);
   });
 };
@@ -85,7 +108,7 @@ export const generateMovie = async (url, id, f1, f2) => {
 let NUM_PAGE = 1;
 
 export const paginationMovies = () => {
-  const contentWrap = document.querySelector('.content-wrapper')
+  const contentWrap = document.querySelector('.content-wrapper');
   const root = document.getElementById('root');
   const buttonWrapper = document.createElement('div');
   buttonWrapper.classList.add('button-wrapper');
@@ -106,7 +129,7 @@ export const paginationMovies = () => {
       NUM_PAGE = 1;
     }
     removeElements(footerWrapper, buttonWrapper, movies);
-    generateMovie(API_URL, NUM_PAGE, getFavoritMovie(), getWishMovie());
+    generateMovie(API_URL, NUM_PAGE);
     setTimeout(paginationMovies, 1000);
     createFooter();
   });
@@ -115,7 +138,7 @@ export const paginationMovies = () => {
   buttonTwo.addEventListener('click', () => {
     NUM_PAGE++;
     removeElements(footerWrapper, buttonWrapper, movies);
-    generateMovie(API_URL, NUM_PAGE, getFavoritMovie(), getWishMovie());
+    generateMovie(API_URL, NUM_PAGE);
     setTimeout(paginationMovies, 1000);
     createFooter();
   });
@@ -123,4 +146,3 @@ export const paginationMovies = () => {
   buttonWrapper.append(buttonOne, numberOfPage, buttonTwo);
   contentWrap.append(buttonWrapper);
 };
-

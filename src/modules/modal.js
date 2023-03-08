@@ -47,7 +47,7 @@ export const renderModalWindowMovie = async (data) => {
   imgWrapper.classList.add('img-wrapper');
 
   const modalImg = document.createElement('img');
-  modalImg.src = data.posterUrl;
+  modalImg.src = data.posterUrlPreview;
   modalImg.setAttribute('id', 'img01');
   modalImg.classList.add('modal-content');
 
