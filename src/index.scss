@@ -6,7 +6,11 @@
 @import 'style/main';
 @import 'style/footer';
 @import 'style/modal';
+@import 'style/slider';
 
+* {
+  box-sizing: border-box;
+}
 
 #root {
   position: relative;

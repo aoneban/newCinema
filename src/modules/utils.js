@@ -1,4 +1,11 @@
-import { getMovie, API_URL, API_FILM_MODAL, API_FILMS_PREMIER } from './api';
+import {
+  getMovie,
+  API_URL,
+  API_FILM_MODAL,
+  API_FILMS_PREMIER,
+  API_AWAIT_MOVIE,
+  API_TOP_250
+} from './api';
 import { createFooter } from '../pages/Footer';
 import {
   colorRatingBorder,
@@ -7,11 +14,20 @@ import {
 } from './helpers';
 import { renderModalWindowMovie } from './modal';
 
-let TIMER = 0;
+let count = 0;
+let countTwo = 0;
+let totalSliders = 0;
+let totalSlidersTwo = 0;
+let width;
+let widthTwo;
+// current page
+let NUM_PAGE = 1;
 
 export const generateMovie = async (url, id) => {
   const data = await getMovie(url, id);
   const dataPremier = await getMovie(API_FILMS_PREMIER, 'MARCH');
+  const dataTop250 = await getMovie(API_TOP_250, 1);
+  const dataAwaitMovie = await getMovie(API_AWAIT_MOVIE, 1);
   const root = document.getElementById('root');
   const contentWrap = document.createElement('main');
   contentWrap.classList.add('content-wrapper');
@@ -19,7 +35,6 @@ export const generateMovie = async (url, id) => {
   const favoriteMovie = document.createElement('section');
   favoriteMovie.classList.add('favorite-movie');
   dataPremier.items.map((el) => {
-    console.log('это' + el);
     const imgWrapper = document.createElement('div');
     imgWrapper.classList.add('img-premier-wrapper');
     const imgPremier = document.createElement('img');
@@ -36,10 +51,84 @@ export const generateMovie = async (url, id) => {
 
   const wishMovie = document.createElement('section');
   wishMovie.classList.add('wish-movie');
-  //const imgPremier = document.createElement('img');
-  //imgPremier.classList.add('premier-img');
-  //imgPremier.src = dataPremier.items[TIMER].posterUrl;
-  //wishMovie.append(imgPremier);
+  
+  const sliderWrapperOne = document.createElement('div');
+  sliderWrapperOne.classList.add('slider-one');
+  const titleSliderOne = document.createElement('h3');
+  titleSliderOne.textContent = 'Ожидаемые фильмы';
+  const sliders = document.createElement('div');
+  sliders.classList.add('slider-one-line');
+  dataAwaitMovie.films.map((el) => {
+    const imgSlider = document.createElement('img');
+    imgSlider.src = el.posterUrlPreview;
+    sliders.append(imgSlider);
+  });
+
+  const buttonsWrapper = document.createElement('div');
+  buttonsWrapper.classList.add('buttons-wrapper');
+  const buttonPrev = document.createElement('button');
+  buttonPrev.classList.add('button', 'slider-prev');
+  buttonPrev.textContent = 'Prev';
+  buttonPrev.addEventListener('click', () => {
+    count--;
+    if (count < 0) {
+      count = totalSliders / 4 - 1;
+    }
+    sliders.style.transform = 'translate(-'+count * width + 'px)'
+  })
+  const buttonNext = document.createElement('button');
+  buttonNext.classList.add('button', 'slider-next');
+  buttonNext.textContent = 'Next';
+  buttonNext.addEventListener('click', () => {
+    count++;
+    if (count >= totalSliders / 4) {
+      count = 0;
+    }
+    sliders.style.transform = 'translate(-'+count * width + 'px)'
+  })
+  buttonsWrapper.append(buttonPrev, buttonNext);
+  sliderWrapperOne.append(titleSliderOne, sliders, buttonsWrapper);
+
+  ///////////////////////////////////////////////////////
+  const sliderWrapperTwo = document.createElement('div');
+  sliderWrapperTwo.classList.add('slider-two');
+  const titleSliderTwo = document.createElement('h3');
+  titleSliderTwo.textContent = 'Топ 100';
+  const slidersTwo = document.createElement('div');
+  slidersTwo.classList.add('slider-two-line');
+  dataTop250.films.map((el) => {
+    const imgSlider = document.createElement('img');
+    imgSlider.src = el.posterUrlPreview;
+    slidersTwo.append(imgSlider);
+  });
+
+  const buttonsWrapperTwo = document.createElement('div');
+  buttonsWrapperTwo.classList.add('buttons-wrapper');
+  const buttonPrevTwo = document.createElement('button');
+  buttonPrevTwo.classList.add('button', 'slider-prev');
+  buttonPrevTwo.textContent = 'Prev';
+  buttonPrevTwo.addEventListener('click', () => {
+    countTwo--;
+    if (countTwo < 0) {
+      countTwo = totalSlidersTwo / 4 - 1;
+    }
+    slidersTwo.style.transform = 'translate(-'+countTwo * widthTwo + 'px)'
+  })
+  const buttonNextTwo = document.createElement('button');
+  buttonNextTwo.classList.add('button', 'slider-next');
+  buttonNextTwo.textContent = 'Next';
+  buttonNextTwo.addEventListener('click', () => {
+    countTwo++;
+    if (countTwo >= totalSlidersTwo / 4) {
+      countTwo = 0;
+    }
+    slidersTwo.style.transform = 'translate(-'+countTwo * widthTwo + 'px)'
+  })
+  buttonsWrapperTwo.append(buttonPrevTwo, buttonNextTwo);
+  sliderWrapperTwo.append(titleSliderTwo, slidersTwo, buttonsWrapperTwo);
+
+  //////////////////////////////////////////////////////
+  wishMovie.append(sliderWrapperOne, sliderWrapperTwo);
 
   data.films.forEach(async (elem) => {
     const listMovies = document.createElement('div');
@@ -104,9 +193,6 @@ export const generateMovie = async (url, id) => {
   });
 };
 
-// current page
-let NUM_PAGE = 1;
-
 export const paginationMovies = () => {
   const contentWrap = document.querySelector('.content-wrapper');
   const root = document.getElementById('root');
@@ -146,3 +232,31 @@ export const paginationMovies = () => {
   buttonWrapper.append(buttonOne, numberOfPage, buttonTwo);
   contentWrap.append(buttonWrapper);
 };
+
+export const initialSliderOne = () => {
+  setTimeout(() => {
+    const images = document.querySelectorAll('.slider-one-line img');
+    totalSliders = images.length;
+    const sliderLine = document.querySelector('.slider-one');
+    width = document.querySelector('.slider-one').offsetWidth;
+    sliderLine.style.width = width * images.length + 'px';
+    images.forEach((el) => {
+      el.style.width = width / 4 + 'px';
+      el.style.height = 'auto';
+    });
+  }, 1000);
+}
+
+export const initialSliderTwo = () => {
+  setTimeout(() => {
+    const images = document.querySelectorAll('.slider-two-line img');
+    totalSlidersTwo = images.length;
+    const sliderLine = document.querySelector('.slider-two');
+    widthTwo = document.querySelector('.slider-two').offsetWidth;
+    sliderLine.style.width = widthTwo * images.length + 'px';
+    images.forEach((el) => {
+      el.style.width = widthTwo / 4 + 'px';
+      el.style.height = 'auto';
+    });
+  }, 1000);
+}
