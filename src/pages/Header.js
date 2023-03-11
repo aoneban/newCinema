@@ -30,6 +30,10 @@ export const createHeader = () => {
 
   const inputForm = document.createElement('form');
   inputForm.classList.add('input-form');
+  inputForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    getSearchMovie();
+  })
 
   const inputSearch = document.createElement('input');
   inputSearch.setAttribute('type', 'text');
