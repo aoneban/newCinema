@@ -4,7 +4,7 @@ import {
   API_FILM_MODAL,
   API_FILMS_PREMIER,
   API_AWAIT_MOVIE,
-  API_TOP_250
+  API_TOP_250,
 } from './api';
 import { createFooter } from '../pages/Footer';
 import {
@@ -51,17 +51,28 @@ export const generateMovie = async (url, id) => {
 
   const wishMovie = document.createElement('section');
   wishMovie.classList.add('wish-movie');
-  
+
   const sliderWrapperOne = document.createElement('div');
   sliderWrapperOne.classList.add('slider-one');
   const titleSliderOne = document.createElement('h3');
+  titleSliderOne.classList.add('title-text')
   titleSliderOne.textContent = 'Ожидаемые фильмы';
   const sliders = document.createElement('div');
   sliders.classList.add('slider-one-line');
   dataAwaitMovie.films.map((el) => {
+    const sliderWrap = document.createElement('div');
+    sliderWrap.classList.add('slider-wrap');
     const imgSlider = document.createElement('img');
     imgSlider.src = el.posterUrlPreview;
-    sliders.append(imgSlider);
+    const title = document.createElement('h3');
+    title.textContent = el.nameRu;
+    sliderWrap.append(imgSlider, title);
+    sliderWrap.addEventListener('click', async () => {
+      const data = await getMovie(API_FILM_MODAL, el.filmId);
+      console.log(data.kinopoiskId);
+      renderModalWindowMovie(data);
+    });
+    sliders.append(sliderWrap);
   });
 
   const buttonsWrapper = document.createElement('div');
@@ -74,8 +85,8 @@ export const generateMovie = async (url, id) => {
     if (count < 0) {
       count = totalSliders / 4 - 1;
     }
-    sliders.style.transform = 'translate(-'+count * width + 'px)'
-  })
+    sliders.style.transform = 'translate(-' + count * width + 'px)';
+  });
   const buttonNext = document.createElement('button');
   buttonNext.classList.add('button', 'slider-next');
   buttonNext.textContent = 'Next';
@@ -84,8 +95,8 @@ export const generateMovie = async (url, id) => {
     if (count >= totalSliders / 4) {
       count = 0;
     }
-    sliders.style.transform = 'translate(-'+count * width + 'px)'
-  })
+    sliders.style.transform = 'translate(-' + count * width + 'px)';
+  });
   buttonsWrapper.append(buttonPrev, buttonNext);
   sliderWrapperOne.append(titleSliderOne, sliders, buttonsWrapper);
 
@@ -93,13 +104,24 @@ export const generateMovie = async (url, id) => {
   const sliderWrapperTwo = document.createElement('div');
   sliderWrapperTwo.classList.add('slider-two');
   const titleSliderTwo = document.createElement('h3');
+  titleSliderTwo.classList.add('title-text');
   titleSliderTwo.textContent = 'Топ 100';
   const slidersTwo = document.createElement('div');
   slidersTwo.classList.add('slider-two-line');
   dataTop250.films.map((el) => {
+    const sliderWrap = document.createElement('div');
+    sliderWrap.classList.add('slider-wrap-two');
     const imgSlider = document.createElement('img');
     imgSlider.src = el.posterUrlPreview;
-    slidersTwo.append(imgSlider);
+    const title = document.createElement('h3');
+    title.textContent = el.nameRu;
+    sliderWrap.append(imgSlider, title);
+    sliderWrap.addEventListener('click', async () => {
+      const data = await getMovie(API_FILM_MODAL, el.filmId);
+      console.log(data.kinopoiskId);
+      renderModalWindowMovie(data);
+    });
+    slidersTwo.append(sliderWrap);
   });
 
   const buttonsWrapperTwo = document.createElement('div');
@@ -112,8 +134,8 @@ export const generateMovie = async (url, id) => {
     if (countTwo < 0) {
       countTwo = totalSlidersTwo / 4 - 1;
     }
-    slidersTwo.style.transform = 'translate(-'+countTwo * widthTwo + 'px)'
-  })
+    slidersTwo.style.transform = 'translate(-' + countTwo * widthTwo + 'px)';
+  });
   const buttonNextTwo = document.createElement('button');
   buttonNextTwo.classList.add('button', 'slider-next');
   buttonNextTwo.textContent = 'Next';
@@ -122,8 +144,8 @@ export const generateMovie = async (url, id) => {
     if (countTwo >= totalSlidersTwo / 4) {
       countTwo = 0;
     }
-    slidersTwo.style.transform = 'translate(-'+countTwo * widthTwo + 'px)'
-  })
+    slidersTwo.style.transform = 'translate(-' + countTwo * widthTwo + 'px)';
+  });
   buttonsWrapperTwo.append(buttonPrevTwo, buttonNextTwo);
   sliderWrapperTwo.append(titleSliderTwo, slidersTwo, buttonsWrapperTwo);
 
@@ -202,31 +224,35 @@ export const paginationMovies = () => {
   const footerWrapper = document.querySelector('.footer-wrapper');
 
   const numberOfPage = document.createElement('p');
-  numberOfPage.textContent = `Page number: ${NUM_PAGE}`;
+  numberOfPage.textContent = `Page: ${NUM_PAGE}`;
 
   const buttonTwo = document.createElement('button');
   const movies = document.querySelector('.content-wrapper');
 
   const buttonOne = document.createElement('button');
-  buttonOne.textContent = '< prev';
+  buttonOne.textContent = '<';
   buttonOne.addEventListener('click', () => {
     NUM_PAGE--;
     if (NUM_PAGE < 1) {
       NUM_PAGE = 1;
     }
-    removeElements(footerWrapper, buttonWrapper, movies);
+    removeElements(buttonWrapper, movies);
     generateMovie(API_URL, NUM_PAGE);
+    initialSliderOne();
+    initialSliderTwo();
     setTimeout(paginationMovies, 1000);
-    createFooter();
+   // createFooter();
   });
 
-  buttonTwo.textContent = 'next >';
+  buttonTwo.textContent = '>';
   buttonTwo.addEventListener('click', () => {
     NUM_PAGE++;
-    removeElements(footerWrapper, buttonWrapper, movies);
+    removeElements( buttonWrapper, movies);
     generateMovie(API_URL, NUM_PAGE);
+    initialSliderOne();
+    initialSliderTwo();
     setTimeout(paginationMovies, 1000);
-    createFooter();
+    //createFooter();
   });
 
   buttonWrapper.append(buttonOne, numberOfPage, buttonTwo);
@@ -235,7 +261,7 @@ export const paginationMovies = () => {
 
 export const initialSliderOne = () => {
   setTimeout(() => {
-    const images = document.querySelectorAll('.slider-one-line img');
+    const images = document.querySelectorAll('.slider-wrap img');
     totalSliders = images.length;
     const sliderLine = document.querySelector('.slider-one');
     width = document.querySelector('.slider-one').offsetWidth;
@@ -245,11 +271,11 @@ export const initialSliderOne = () => {
       el.style.height = 'auto';
     });
   }, 1000);
-}
+};
 
 export const initialSliderTwo = () => {
   setTimeout(() => {
-    const images = document.querySelectorAll('.slider-two-line img');
+    const images = document.querySelectorAll('.slider-wrap-two img');
     totalSlidersTwo = images.length;
     const sliderLine = document.querySelector('.slider-two');
     widthTwo = document.querySelector('.slider-two').offsetWidth;
@@ -259,4 +285,4 @@ export const initialSliderTwo = () => {
       el.style.height = 'auto';
     });
   }, 1000);
-}
+};

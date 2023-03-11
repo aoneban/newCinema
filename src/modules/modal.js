@@ -100,7 +100,7 @@ export const renderModalWindowMovie = async (data) => {
       imgActor.classList.add('img-actor');
       imgActor.src = el.posterUrl;
       imgActor.alt = el.nameRu;
-      imgActor.addEventListener('mouseover', async () => {
+      imgActor.addEventListener('click', async () => {
         const actorInfo = await getMovie(API_PERSONAL_ACTOR, el.staffId);
 
         const modalWrapper = document.querySelector('.modal-wrapper');

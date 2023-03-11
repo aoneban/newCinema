@@ -1,10 +1,7 @@
 export const API_KEY = '6f935771-6ea6-4fdd-b138-660013b47b14';
-export const API_URL =
-  'https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=';
-export const API_FILM_MODAL =
-  'https://kinopoiskapiunofficial.tech/api/v2.2/films/';
-export const API_FILM_ACTORS =
-  'https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=';
+export const API_URL = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=';
+export const API_FILM_MODAL = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/';
+export const API_FILM_ACTORS = 'https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=';
 export const API_PERSONAL_ACTOR = 'https://kinopoiskapiunofficial.tech/api/v1/staff/';
 export const API_GET_TRAILERS = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/';
 export const API_FILM_SEARCH = "https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=";

@@ -14,8 +14,8 @@ export const correctRatingPercent = (rating) => {
   return rating !== null ? rating.replace('.0%', '%') : 'N/R';
 };
 
-export const removeElements = (a,b,c) => {
-  a.remove();
+export const removeElements = (b,c) => {
+  //a.remove();
   b.remove();
   c.remove();
 }
