@@ -240,7 +240,7 @@ export const paginationMovies = () => {
     generateMovie(API_URL, NUM_PAGE);
     initialSliderOne();
     initialSliderTwo();
-    setTimeout(paginationMovies, 1000);
+    setTimeout(paginationMovies, 4000);
    // createFooter();
   });
 
@@ -251,7 +251,7 @@ export const paginationMovies = () => {
     generateMovie(API_URL, NUM_PAGE);
     initialSliderOne();
     initialSliderTwo();
-    setTimeout(paginationMovies, 1000);
+    setTimeout(paginationMovies, 4000);
     //createFooter();
   });
 
@@ -270,7 +270,7 @@ export const initialSliderOne = () => {
       el.style.width = width / 4 + 'px';
       el.style.height = 'auto';
     });
-  }, 1000);
+  }, 3000);
 };
 
 export const initialSliderTwo = () => {
@@ -284,5 +284,6 @@ export const initialSliderTwo = () => {
       el.style.width = widthTwo / 4 + 'px';
       el.style.height = 'auto';
     });
-  }, 1000);
+  }, 3000);
 };
+
