@@ -34,6 +34,9 @@ export const generateMovie = async (url, id) => {
 
   const favoriteMovie = document.createElement('section');
   favoriteMovie.classList.add('favorite-movie');
+  const premierTitle = document.createElement('h3');
+  premierTitle.classList.add('premier-title');
+  premierTitle.textContent = 'Premieres in March';
   dataPremier.items.map((el) => {
     const imgWrapper = document.createElement('div');
     imgWrapper.classList.add('img-premier-wrapper');
@@ -46,7 +49,7 @@ export const generateMovie = async (url, id) => {
       console.log(data.kinopoiskId);
       renderModalWindowMovie(data);
     });
-    favoriteMovie.append(imgWrapper);
+    favoriteMovie.append(premierTitle,imgWrapper);
   });
 
   const wishMovie = document.createElement('section');
@@ -56,7 +59,7 @@ export const generateMovie = async (url, id) => {
   sliderWrapperOne.classList.add('slider-one');
   const titleSliderOne = document.createElement('h3');
   titleSliderOne.classList.add('title-text')
-  titleSliderOne.textContent = 'Ожидаемые фильмы';
+  titleSliderOne.textContent = 'Most anticipated films';
   const sliders = document.createElement('div');
   sliders.classList.add('slider-one-line');
   dataAwaitMovie.films.map((el) => {
@@ -105,7 +108,7 @@ export const generateMovie = async (url, id) => {
   sliderWrapperTwo.classList.add('slider-two');
   const titleSliderTwo = document.createElement('h3');
   titleSliderTwo.classList.add('title-text');
-  titleSliderTwo.textContent = 'Топ 100';
+  titleSliderTwo.textContent = 'Best movies of all time';
   const slidersTwo = document.createElement('div');
   slidersTwo.classList.add('slider-two-line');
   dataTop250.films.map((el) => {
