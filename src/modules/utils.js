@@ -13,6 +13,7 @@ import {
   removeElements,
 } from './helpers';
 import { renderModalWindowMovie } from './modal';
+import { months } from './data';
 
 let count = 0;
 let countTwo = 0;
@@ -25,29 +26,57 @@ let NUM_PAGE = 1;
 
 export const generateMovie = async (url, id) => {
   const data = await getMovie(url, id);
-  const dataPremier = await getMovie(API_FILMS_PREMIER, 'MARCH');
   const dataTop250 = await getMovie(API_TOP_250, 1);
   const dataAwaitMovie = await getMovie(API_AWAIT_MOVIE, 1);
   const root = document.getElementById('root');
   const contentWrap = document.createElement('main');
   contentWrap.classList.add('content-wrapper');
-
   const favoriteMovie = document.createElement('section');
   favoriteMovie.classList.add('favorite-movie');
-  dataPremier.items.map((el) => {
-    const imgWrapper = document.createElement('div');
-    imgWrapper.classList.add('img-premier-wrapper');
-    const imgPremier = document.createElement('img');
-    imgPremier.classList.add('img-premier');
-    imgPremier.src = el.posterUrlPreview;
-    imgWrapper.append(imgPremier);
-    imgWrapper.addEventListener('click', async () => {
-      const data = await getMovie(API_FILM_MODAL, el.kinopoiskId);
-      console.log(data.kinopoiskId);
-      renderModalWindowMovie(data);
+  const monthButtonWrapper = document.createElement('div');
+  monthButtonWrapper.classList.add('month-button-wrapper');
+  months.forEach(el => {
+    const monthButton = document.createElement('input');
+    monthButton.setAttribute('type', 'button');
+    monthButton.value = el
+    monthButton.classList.add('month-button');
+    monthButton.textContent = el;
+    monthButton.addEventListener('click', (e) => {
+      const currentMonth = e.target.value;
+      setTimeout(() => {
+        const title = document.querySelector('.premier-title')
+        const favorit = document.querySelectorAll('.img-premier-wrapper');
+        title.remove();
+        favorit.forEach(el => {
+          el.remove();
+        });
+        generatePremierMonth(currentMonth);
+      })
+    })
+    monthButtonWrapper.append(monthButton)
+  }, 2000)
+  favoriteMovie.append(monthButtonWrapper);
+
+  generatePremierMonth('MARCH');
+  async function generatePremierMonth(month) {
+    const dataPremier = await getMovie(API_FILMS_PREMIER, month);
+    const premierTitle = document.createElement('h3');
+    premierTitle.classList.add('premier-title');
+    premierTitle.textContent = `Premieres in ${month}`;
+    dataPremier.items.map((el) => {
+      const imgWrapper = document.createElement('div');
+      imgWrapper.classList.add('img-premier-wrapper');
+      const imgPremier = document.createElement('img');
+      imgPremier.classList.add('img-premier');
+      imgPremier.src = el.posterUrlPreview;
+      imgWrapper.append(imgPremier);
+      imgWrapper.addEventListener('click', async () => {
+        const data = await getMovie(API_FILM_MODAL, el.kinopoiskId);
+        renderModalWindowMovie(data);
+      });
+      favoriteMovie.append(premierTitle, imgWrapper);
     });
-    favoriteMovie.append(imgWrapper);
-  });
+  }
 
   const wishMovie = document.createElement('section');
   wishMovie.classList.add('wish-movie');
@@ -55,8 +84,8 @@ export const generateMovie = async (url, id) => {
   const sliderWrapperOne = document.createElement('div');
   sliderWrapperOne.classList.add('slider-one');
   const titleSliderOne = document.createElement('h3');
-  titleSliderOne.classList.add('title-text')
-  titleSliderOne.textContent = 'Ожидаемые фильмы';
+  titleSliderOne.classList.add('title-text');
+  titleSliderOne.textContent = 'Most anticipated films';
   const sliders = document.createElement('div');
   sliders.classList.add('slider-one-line');
   dataAwaitMovie.films.map((el) => {
@@ -105,7 +134,7 @@ export const generateMovie = async (url, id) => {
   sliderWrapperTwo.classList.add('slider-two');
   const titleSliderTwo = document.createElement('h3');
   titleSliderTwo.classList.add('title-text');
-  titleSliderTwo.textContent = 'Топ 100';
+  titleSliderTwo.textContent = 'Best movies of all time';
   const slidersTwo = document.createElement('div');
   slidersTwo.classList.add('slider-two-line');
   dataTop250.films.map((el) => {
@@ -241,13 +270,13 @@ export const paginationMovies = () => {
     initialSliderOne();
     initialSliderTwo();
     setTimeout(paginationMovies, 4000);
-   // createFooter();
+    // createFooter();
   });
 
   buttonTwo.textContent = '>';
   buttonTwo.addEventListener('click', () => {
     NUM_PAGE++;
-    removeElements( buttonWrapper, movies);
+    removeElements(buttonWrapper, movies);
     generateMovie(API_URL, NUM_PAGE);
     initialSliderOne();
     initialSliderTwo();
@@ -286,4 +315,3 @@ export const initialSliderTwo = () => {
     });
   }, 3000);
 };
-
