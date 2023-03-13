@@ -7,7 +7,7 @@ export const createHeader = () => {
 
   const logo = document.createElement('a');
   logo.classList.add('logo-wrapper');
-  logo.href = 'http://localhost:3000/';
+  logo.href = '/';
 
   const logoName = document.createElement('p');
   logoName.classList.add('logo-name');

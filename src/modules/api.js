@@ -1,4 +1,4 @@
-export const API_KEY = '6f935771-6ea6-4fdd-b138-660013b47b14';
+export const API_KEY = '750447c2-3f08-4a4a-b7ea-2dc529472642';
 export const API_URL = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=';
 export const API_FILM_MODAL = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/';
 export const API_FILM_ACTORS = 'https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=';
@@ -18,7 +18,6 @@ export async function getMovie(url, id) {
     },
   });
   const responseData = await response.json();
-  console.log(responseData);
   return responseData;
 }
 
