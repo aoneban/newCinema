@@ -7,9 +7,15 @@
 @import 'style/footer';
 @import 'style/modal';
 @import 'style/slider';
+@import 'style/menu';
+
 
 * {
   box-sizing: border-box;
+}
+
+li {
+  list-style: none;
 }
 
 #root {

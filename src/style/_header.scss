@@ -21,7 +21,15 @@
       list-style: none;
     }
     .header-menu {
-      margin-left: 35px;
+      margin-left: 20px;
+      background: #453d39;
+      border-radius: 5px;
+      padding: 5px 8px;
+      cursor: pointer;
+      font: bold 16px Verdana;
+      &:hover {
+        background: #5b504b;
+      }
     }
     .logo-wrapper {
       text-decoration: none;

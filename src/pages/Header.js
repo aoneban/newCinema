@@ -1,4 +1,4 @@
-import { getSearchMovie } from "../modules/search";
+import { getSearchMovie } from '../modules/search';
 
 export const createHeader = () => {
   const root = document.getElementById('root');
@@ -22,8 +22,17 @@ export const createHeader = () => {
   headerWrapp.classList.add('header-wrapp');
 
   const menu = document.createElement('li');
-  menu.classList.add('header-items', 'header-menu');
-  menu.textContent = 'Menu';
+  menu.innerHTML = `<span class="header-items header-menu">&#9776; Menu</span>`;
+  menu.addEventListener('click', () => {
+    document.getElementById('myNav').style.height = '100%';
+    document.body.classList.add('stop-scroll');
+  });
+
+  const close = document.querySelector('.closebtn');
+  close.addEventListener('click', () => {
+    document.getElementById('myNav').style.height = '0%';
+    document.body.classList.remove('stop-scroll');
+  });
 
   const inputWrapper = document.createElement('li');
   inputWrapper.classList.add('input-wrapper');
@@ -33,7 +42,7 @@ export const createHeader = () => {
   inputForm.addEventListener('submit', (e) => {
     e.preventDefault();
     getSearchMovie();
-  })
+  });
 
   const inputSearch = document.createElement('input');
   inputSearch.setAttribute('type', 'text');
@@ -46,8 +55,8 @@ export const createHeader = () => {
   buttonSearch.classList.add('header-items', 'header-link');
   buttonSearch.addEventListener('click', getSearchMovie);
 
-  inputForm.append(inputSearch, buttonSearch)
-  inputWrapper.append(inputForm)
+  inputForm.append(inputSearch, buttonSearch);
+  inputWrapper.append(inputForm);
 
   const watchList = document.createElement('li');
   watchList.classList.add('header-items');
@@ -61,14 +70,7 @@ export const createHeader = () => {
   enPl.classList.add('header-items');
   enPl.textContent = 'En';
 
-  headerWrapp.append(
-    logo,
-    menu,
-    inputWrapper,
-    watchList,
-    singIn,
-    enPl
-  );
+  headerWrapp.append(logo, menu, inputWrapper, watchList, singIn, enPl);
 
   headerList.append(logo, headerWrapp);
   header.appendChild(headerList);
