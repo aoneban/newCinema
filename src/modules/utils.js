@@ -54,12 +54,13 @@ export const generateMovie = async (url, id) => {
       })
     })
     monthButtonWrapper.append(monthButton)
-  }, 2000)
+  }, 500)
   favoriteMovie.append(monthButtonWrapper);
 
   generatePremierMonth('MARCH');
   async function generatePremierMonth(month) {
     const dataPremier = await getMovie(API_FILMS_PREMIER, month);
+    console.log(dataPremier.items.map(el => el))
     const premierTitle = document.createElement('h3');
     premierTitle.classList.add('premier-title');
     premierTitle.textContent = `Premieres in ${month}`;

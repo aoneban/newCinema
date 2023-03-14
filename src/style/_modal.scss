@@ -170,6 +170,11 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  .stop-scroll {
+    height: 100%;
+    overflow: hidden;
+  }
   
   /* 100% Image Width on Smaller Screens 
   @media only screen and (max-width: 700px){
