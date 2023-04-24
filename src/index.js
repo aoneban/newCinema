@@ -10,15 +10,13 @@ import {
 } from './modules/utils';
 import { createFooter } from './pages/Footer';
 
-let width;
-let totalSliders = 0;
 const startRender = () => {
   createHeader();
   generateMovie(API_URL, 1);
   setTimeout(paginationMovies, 4000);
 };
 startRender();
-//createFooter();
+//setTimeout(createFooter, 1000)
 window.addEventListener('load', initialSliderOne);
 window.addEventListener('load', initialSliderTwo);
 window.addEventListener('resize', initialSliderOne);
