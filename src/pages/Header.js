@@ -1,4 +1,5 @@
 import { getSearchMovie } from '../modules/search';
+import { createMenu } from '../modules/helpers';
 
 export const createHeader = () => {
   const root = document.getElementById('root');
@@ -21,9 +22,12 @@ export const createHeader = () => {
   const headerWrapp = document.createElement('ul');
   headerWrapp.classList.add('header-wrapp');
 
+  createMenu();
+
   const menu = document.createElement('li');
   menu.innerHTML = `<span class="header-items header-menu">&#9776; Menu</span>`;
   menu.addEventListener('click', () => {
+    
     document.getElementById('myNav').style.height = '100%';
     document.body.classList.add('stop-scroll');
   });
@@ -72,7 +76,7 @@ export const createHeader = () => {
 
   headerWrapp.append(logo, menu, inputWrapper, watchList, singIn, enPl);
 
-  headerList.append(logo, headerWrapp);
+  headerList.append(headerWrapp);
   header.appendChild(headerList);
   root.appendChild(header);
 };

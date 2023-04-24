@@ -11,6 +11,7 @@ import {
   colorRatingBorder,
   correctRatingPercent,
   removeElements,
+  generarateMonth
 } from './helpers';
 import { renderModalWindowMovie } from './modal';
 import { months } from './data';
@@ -57,10 +58,9 @@ export const generateMovie = async (url, id) => {
   }, 500)
   favoriteMovie.append(monthButtonWrapper);
 
-  generatePremierMonth('MARCH');
+  generatePremierMonth(generarateMonth);
   async function generatePremierMonth(month) {
     const dataPremier = await getMovie(API_FILMS_PREMIER, month);
-    console.log(dataPremier.items.map(el => el))
     const premierTitle = document.createElement('h3');
     premierTitle.classList.add('premier-title');
     premierTitle.textContent = `Premieres in ${month}`;
@@ -271,7 +271,7 @@ export const paginationMovies = () => {
     initialSliderOne();
     initialSliderTwo();
     setTimeout(paginationMovies, 4000);
-    // createFooter();
+    //createFooter();
   });
 
   buttonTwo.textContent = '>';
