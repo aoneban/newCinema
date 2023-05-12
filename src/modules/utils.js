@@ -99,7 +99,7 @@ export const generateMovie = async (url, id) => {
     sliderWrap.append(imgSlider, title);
     sliderWrap.addEventListener('click', async () => {
       const data = await getMovie(API_FILM_MODAL, el.filmId);
-      console.log(data.kinopoiskId);
+      //console.log(data.kinopoiskId);
       renderModalWindowMovie(data);
     });
     sliders.append(sliderWrap);
@@ -130,7 +130,6 @@ export const generateMovie = async (url, id) => {
   buttonsWrapper.append(buttonPrev, buttonNext);
   sliderWrapperOne.append(titleSliderOne, sliders, buttonsWrapper);
 
-  ///////////////////////////////////////////////////////
   const sliderWrapperTwo = document.createElement('div');
   sliderWrapperTwo.classList.add('slider-two');
   const titleSliderTwo = document.createElement('h3');
@@ -148,7 +147,7 @@ export const generateMovie = async (url, id) => {
     sliderWrap.append(imgSlider, title);
     sliderWrap.addEventListener('click', async () => {
       const data = await getMovie(API_FILM_MODAL, el.filmId);
-      console.log(data.kinopoiskId);
+      //console.log(data.kinopoiskId);
       renderModalWindowMovie(data);
     });
     slidersTwo.append(sliderWrap);
@@ -187,7 +186,7 @@ export const generateMovie = async (url, id) => {
     listMovies.classList.add('list-movies');
     listMovies.addEventListener('click', async () => {
       const data = await getMovie(API_FILM_MODAL, elem.filmId);
-      console.log(data.filmId);
+      //console.log(data.filmId);
       renderModalWindowMovie(data);
     });
 

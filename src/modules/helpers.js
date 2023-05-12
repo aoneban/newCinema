@@ -49,8 +49,8 @@ export const createMenu = () => {
 
 
 const getCurrentMonth = (months) => {
-const date = new Date().getMonth()
-return months[date]
+const date = new Date().getMonth();
+return months[date];
 }
 
 export const generarateMonth = getCurrentMonth(months)
