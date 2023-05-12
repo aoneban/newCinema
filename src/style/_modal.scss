@@ -87,8 +87,13 @@
     cursor: pointer;
   }
 
+  .film-title-en {
+    position: relative;
+    bottom: 10px;
+  }
+
   .personal-info-wrap {
-    max-width: 1350px;
+    max-width: 1390px;
     height: auto;
     color: $white;
     background-color: $gray;

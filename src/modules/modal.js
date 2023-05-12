@@ -15,7 +15,7 @@ export const renderModalWindowMovie = async (data) => {
     data.kinopoiskId,
     '/videos'
   );
-  console.log(getTrailers.items.map((el) => el));
+  //console.log(getTrailers.items.map((el) => el));
   const root = document.getElementById('root');
 
   const modal = document.createElement('div');
