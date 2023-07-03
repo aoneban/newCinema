@@ -4,18 +4,21 @@ import {
   API_GET_TRAILERS,
   API_FILM_ACTORS,
   API_PERSONAL_ACTOR,
+  API_FILM_IMAGES,
 } from './api';
 
 export const renderModalWindowMovie = async (data) => {
   //get actors to display in details
   const actorsData = await getMovie(API_FILM_ACTORS, data.kinopoiskId);
+  const imageData = await getMovie(API_FILM_IMAGES, data.kinopoiskId + '/images?type=STILL');
+  const newImageData = imageData.items.slice(0, 7)
+  console.log(newImageData)
   //get trailers to display in details
   const getTrailers = await getMovieTrailers(
     API_GET_TRAILERS,
     data.kinopoiskId,
     '/videos'
   );
-  //console.log(getTrailers.items.map((el) => el));
   const root = document.getElementById('root');
 
   const modal = document.createElement('div');
@@ -50,6 +53,13 @@ export const renderModalWindowMovie = async (data) => {
   modalImg.src = data.posterUrlPreview;
   modalImg.setAttribute('id', 'img01');
   modalImg.classList.add('modal-content');
+
+  newImageData.forEach((el) => {
+    const img = document.createElement('img');
+    img.src = el.previewUrl;
+    img.classList.add('additional-photos')
+    imgWrapper.append(img);
+  })
 
   imgWrapper.append(modalImg);
 
