@@ -116,6 +116,66 @@
     }
   }
 
+  .description-info-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    height: auto;
+    color: #ffffff;
+    background-color: rgb(63, 60, 60, 0.99);
+    border-radius: 10px;
+    padding: 50px;
+    position: absolute;
+    right: 20%;
+    top: 17%;
+    z-index: 100000;
+  }
+
+  .opinions-wrapper {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .opinion-item-positive {
+    flex-grow:  1;
+  }
+  .opinion-item-negative {
+    flex-grow:  1;
+  }
+  .opinion-item-neutral {
+    flex-grow:  1;
+  }
+
+  .opinion-link,
+  .btn{
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    border-bottom: none;
+    text-decoration: underline;
+    font-size: 16px;
+    color: aqua;
+    &:hover {
+      color: aquamarine;
+    }
+  }
+
+  .btn {
+    margin: 20px auto;
+    display: block;
+    background: none;
+    border: 1px solid aqua;
+    &:hover {
+      border: 1px solid aquamarine;
+    }
+  }
+
+  .btn2 {
+    padding: 10px 20px;
+    &:hover {
+      border: 1px solid aquamarine;
+    }
+  }
+
   .personal-film {
     position: relative;
     display: inline;
@@ -152,6 +212,22 @@
 
   .films{
     padding-bottom: 120px;
+  }
+
+  .opinion-item {
+    padding: 15px;
+  }
+
+  .b1 {
+    background-color: rgba(69, 168, 69, 0.2);
+  }
+  
+  .b2 {
+    background-color: rgba(255, 165, 0, 0.2);
+  }
+
+  .b3 {
+    background-color: rgba(255, 0, 0, 0.2);
   }
   
   @-webkit-keyframes zoom {
